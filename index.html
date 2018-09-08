@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>i3 Control Panel</title>
+  <style>
+    body,
+    html {
+      padding: 0;
+      margin: 0;
+    }
+
+    body {
+      font-family: Arial;
+    }
+
+    #container {
+      background: #FFF;
+      padding: 10px;
+      border-radius: 4px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .row {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      text-align: center;
+    }
+
+    .opcao {
+      width: 100px;
+      height: 100px;
+      background: none;
+      border: none;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    h4 {
+      margin: 0;
+    }
+
+    hr {
+      width: 100%;
+    }
+
+    img {
+      width: 100px;
+      height: 100px;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- All of the Node.js APIs are available in this renderer process. -->
+  <!-- We are using Node.js <script>document.write(process.versions.node)</script>,
+    Chromium <script>document.write(process.versions.chrome)</script>,
+    and Electron <script>document.write(process.versions.electron)</script>. -->
+  <div id="container">
+
+    <h4>i3 Control Panel</h4>
+    <hr />
+
+    <h4>Geral</h4>
+    <div class="row">
+      <div class="box">
+        <span class="title">Screen</span>
+        <button class="opcao" onclick="screen()">
+          <img src="src/television.png" alt="Screen">
+        </button>
+      </div>
+      <div class="box">
+        <span class="title">Sound</span>
+        <button class="opcao" onclick="sound()">
+        <img src="src/speakers.png" alt="Sound">
+      </button>
+      </div>
+      <div class="box">
+        <span class="title">Network</span>
+        <button class="opcao" onclick="network()">
+        <img src="src/ethernet.png" alt="Network">
+      </button>
+      </div>
+      <div class="box">
+        <span class="title">Power</span>
+        <button class="opcao" onclick="power()">
+        <img src="src/plug.png" alt="Power">
+      </button>
+      </div>
+    </div>
+
+    <h4>Personalização</h4>
+    <div class="row">
+      <div class="box">
+        <span class="title">Wallpaper</span>
+        <button class="opcao" onclick="wallpaper()">
+        <img src="src/wallpaper.png" alt="Wallpaper">
+      </button>
+      </div>
+      <div class="box">
+        <span class="title">Top Bar</span>
+        <button class="opcao" onclick="topBar()">
+        <img src="src/linux.png" alt="Top Bar">
+      </button>
+      </div>
+      <div class="box">
+        <span class="title">Menu</span>
+        <button class="opcao" onclick="menu()">
+        <img src="src/apps.png" alt="Menu">
+      </button>
+      </div>
+      <div class="box">
+        <span class="title">Notification</span>
+        <button class="opcao" onclick="notification()">
+        <img src="src/notification.png" alt="Notification">
+      </button>
+      </div>
+    </div>
+
+    <h4>Dispositivos</h4>
+    <div class="row">
+      <div class="box">
+        <span class="title">Bluetooth</span>
+        <button class="opcao" onclick="bluetooth()">
+        <img src="src/bluetooth.png" alt="Bluetooth">
+      </button>
+      </div>
+      <div class="box">
+        <span class="title">Printer</span>
+        <button class="opcao" onclick="printer()">
+        <img src="src/printer.png" alt="Printer">
+      </button>
+      </div>
+      <div class="box">
+        <span class="title">Mouse</span>
+        <button class="opcao" onclick="mouse()">
+        <img src="src/mouse.png" alt="Mouse">
+      </button>
+      </div>
+      <div class="box">
+        <span class="title">Joystick</span>
+        <button class="opcao" onclick="joystick()">
+        <img src="src/game-controller.png" alt="Joystick">
+      </button>
+      </div>
+    </div>
+
+    <h4>Outros</h4>
+    <div class="row">
+      <div class="box">
+        <span class="title">Launcher Apps</span>
+        <button class="opcao" onclick="launcherApps()">
+        <img src="src/start.png" alt="Launcher Apps">
+      </button>
+      </div>
+      <div class="box">
+        <span class="title">Default Apps</span>
+        <button class="opcao" onclick="defaultApps()">
+        <img src="src/innovation.png" alt="Default Apps">
+      </button>
+      </div>
+      <div class="box">
+        <span class="title">Language</span>
+        <button id="openFile" class="opcao" onclick="language()">
+        <img src="src/language.png" alt="Language">
+      </button>
+      </div>
+      <div class="box">
+        <span class="title">Users</span>
+        <button class="opcao" onclick="users()">
+        <img src="src/team.png" alt="Users">
+      </button>
+      </div>
+    </div>
+
+  </div>
+  <script>
+    // You can also require other files to run in this process
+    require('./renderer.js')
+    const {dialog} = require('electron').remote;
+    const shell = require('shelljs')
+    shell.config.execPath = '/usr/bin/node'
+
+    function screen() {
+      shell.exec('arandr')
+    }
+
+    function bluetooth() {
+      shell.exec('blueman-manager')
+    }
+
+    function sound() {
+      shell.exec('pavucontrol')
+    }
+
+    function network() {
+      shell.exec('nm-connection-editor')
+    }
+
+    function printer() {
+      shell.exec('system-config-printer')
+    }
+
+    function joystick() {
+      shell.exec('jstest-gtk')
+    }
+
+    function wallpaper(filepath) {
+      dialog.showOpenDialog((fileNames) => {
+        if(fileNames === undefined){
+          shell.echo('No file selected')
+          return
+        } else {
+          shell.exec('echo "wal -i ' + fileNames + ' -g" > ~/.wallpaper.sh')
+          shell.exec('wal -i ' + fileNames + ' -g')
+        }
+      })
+    }
+
+  </script>
+</body>
+
+</html>
