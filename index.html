@@ -116,9 +116,9 @@
       </button>
       </div>
       <div class="box">
-        <span class="title">Notification</span>
-        <button class="opcao" onclick="notification()">
-        <img src="src/notification.png" alt="Notification">
+        <span class="title">Appearance</span>
+        <button class="opcao" onclick="appearance()">
+        <img src="src/configuration.png" alt="Notification">
       </button>
       </div>
     </div>
@@ -209,6 +209,10 @@
 
     function joystick() {
       shell.exec('jstest-gtk')
+    }
+
+    function appearance() {
+      shell.exec('lxappearance')
     }
 
     function wallpaper(filepath) {
